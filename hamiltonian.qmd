@@ -1,0 +1,4 @@
+# Hamiltoniano de amarre fuerte de bismuto
+
+
+## Implementación en PythTB
