@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.251">
+<meta name="generator" content="quarto-1.1">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -173,6 +173,7 @@ ul.task-list li input[type="checkbox"] {
   <ul class="collapse">
   <li><a href="#espacio-real" id="toc-espacio-real" class="nav-link" data-scroll-target="#espacio-real"><span class="toc-section-number">2.1.1</span>  Espacio Real</a></li>
   <li><a href="#espacio-recíproco" id="toc-espacio-recíproco" class="nav-link" data-scroll-target="#espacio-recíproco"><span class="toc-section-number">2.1.2</span>  Espacio recíproco</a></li>
+  <li><a href="#estructura-cristalina-para-modelo-topológico" id="toc-estructura-cristalina-para-modelo-topológico" class="nav-link" data-scroll-target="#estructura-cristalina-para-modelo-topológico"><span class="toc-section-number">2.1.3</span>  Estructura cristalina para modelo topológico</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -200,14 +201,14 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="2.1" class="anchored" data-anchor-id="estructura-cristalina-de-bismuto"><span class="header-section-number">2.1</span> Estructura cristalina de bismuto</h2>
 <section id="espacio-real" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="espacio-real"><span class="header-section-number">2.1.1</span> Espacio Real</h3>
-<p>El bismuto (Bi) es un elemento químico cuyo arreglo cristalino consiste de una celda unitaria romboédrica que contiene dos átomos , cada uno de ellos con tres primeros vecinos y tres segundos vecinos , como se señala en la Fig. <span class="citation" data-cites="RomboRealRec">(<a href="references.html#ref-RomboRealRec" role="doc-biblioref"><strong>RomboRealRec?</strong></a>)</span> a).</p>
+<p>El bismuto (Bi) es un elemento químico cuyo arreglo cristalino consiste de una celda unitaria romboédrica que contiene dos átomos , cada uno de ellos con tres primeros vecinos y tres segundos vecinos , como se señala en la Fig. <span class="citation" data-cites="RomboRealRec">(<a href="#ref-RomboRealRec" role="doc-biblioref"><strong>RomboRealRec?</strong></a>)</span> a).</p>
 <div id="RomboRealRec" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
 <p><img src="images/RombRealRec.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">a) Celda romboédrica de bismuto en el espacio real, con los vectores de red <span class="math inline">\(\mathbf{a}^r_n\)</span> (<span class="math inline">\(n=1,2,3\)</span>). b) Primera zona de Brillouin de la estructura romboédrica del Bi, con los vectores <span class="math inline">\(\mathbf{b}^r_n\)</span> y los puntos de alta simetría (naranja).</figcaption><p></p>
 </figure>
 </div>
-<p>La estructura romboédrica de bismuto se esquematiza en la Fig. <span class="citation" data-cites="RomboRealRec-Bi">(<a href="references.html#ref-RomboRealRec-Bi" role="doc-biblioref"><strong>RomboRealRec-Bi?</strong></a>)</span> (a), donde los vectores de la red en el espacio real son:</p>
+<p>La estructura romboédrica de bismuto se esquematiza en la Fig. <span class="citation" data-cites="RomboRealRec-Bi">(<a href="#ref-RomboRealRec-Bi" role="doc-biblioref"><strong>RomboRealRec-Bi?</strong></a>)</span> (a), donde los vectores de la red en el espacio real son:</p>
 <p><span class="math display">\[
     \mathbf{a}_1^r = \left ( -\frac{1}{2}a , -\frac{\sqrt{3}}{6}a , \frac{1}{3}c \right ) \hspace{10mm}
     \mathbf{a}_2^r = \left (  \frac{1}{2}a , -\frac{\sqrt{3}}{6}a , \frac{1}{3}c \right ) \hspace{10mm}
@@ -247,6 +248,39 @@ ul.task-list li input[type="checkbox"] {
     \Lambda = \left ( 0,0,0 \right )
 \]</span></p>
 <p>donde <span class="math inline">\(h=0.2303\)</span> en el caso de bismuto .</p>
+</section>
+<section id="estructura-cristalina-para-modelo-topológico" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="estructura-cristalina-para-modelo-topológico"><span class="header-section-number">2.1.3</span> Estructura cristalina para modelo topológico</h3>
+<p>Al proyectar en el plano (111), el bulto del cristal forma una red hexagonal con dos átomos por celda unitaria.</p>
+<p>En el modelo topológico de bismuto que reproduce los estados conductores de borde en una nanoestructura (ver <a href="#sec-hamiltonian">Sección&nbsp;<span class="quarto-unresolved-ref ref-noprefix">sec-hamiltonian</span></a>), se considera una estructura como la que se esquematiza en la Fig. <span class="citation" data-cites="HexRealRec">(<a href="#ref-HexRealRec" role="doc-biblioref"><strong>HexRealRec?</strong></a>)</span>.</p>
+<div id="HexRealRec" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="images/HexRealRec.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">a) Estructura de la celda unitaria para el Hamiltoniano topológico de bismuto en el espacio real y b) recíproco. Los vectores de la red real están etiquetados por <span class="math inline">\(\mathbf{a}^h_n\)</span> y los de la red recíproca por <span class="math inline">\(\mathbf{b}^h_n\)</span> (<span class="math inline">\(n=1,2,3\)</span>).</figcaption><p></p>
+</figure>
+</div>
+<p>Este sistema consiste de una red hexagonal simple que preserva las simetrías espaciales de la red de bismuto. Los vectores de esta red hexagonal en el espacio real son:</p>
+<p><span class="math display">\[
+\begin{align}
+    \mathbf{a}_1^h = \left (a,0,0 \right ) \hspace{10mm}
+    \mathbf{a}_2^h = \left ( -\frac{1}{2}a , \frac{\sqrt{3}}{2}a , 0 \right ) \hspace{10mm}
+    \mathbf{a}_3^h = \left (             0 , 0,c \right )
+\end{align}
+\]</span></p>
+<p>La 1ZB en el espacio recíproco también consiste de una celda hexagonal. Además, las coordenadas relativas de algunos de los puntos de alta simetría en ella son:</p>
+<p><span class="math display">\[    
+\Gamma = \left ( 0,0,0 \right )
+\]</span> <span class="math display">\[
+    \mathrm{M} = \left ( \frac{1}{2},0,0 \right )
+\]</span> <span class="math display">\[
+    \mathrm{K} = \left ( \frac{1}{3},\frac{1}{3},0 \right )
+\]</span> <span class="math display">\[
+    \mathrm{A} = \left ( 0,0, \frac{1}{2} \right )
+\]</span> <span class="math display">\[
+    \mathrm{L} = \left ( \frac{1}{2},0,\frac{1}{2} \right )
+\]</span> <span class="math display">\[
+    \mathrm{H} = \left ( \frac{1}{3},\frac{1}{3},\frac{1}{2} \right ).
+\]</span></p>
 
 
 </section>

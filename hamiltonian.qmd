@@ -1,4 +1,426 @@
-# Hamiltoniano de amarre fuerte de bismuto
+# Hamiltoniano de amarre fuerte de bismuto {#sec-hamiltonian}
+$$
+\newcommand{\bk}{\boldsymbol{k}}
+\newcommand{\baI}{\boldsymbol{a}_1}
+\newcommand{\baII}{\boldsymbol{a}_2}
+\newcommand{\baIII}{\boldsymbol{a}_3}
+$$
 
+En el año 2018, Schindler y colaboradores calcularon la estructura electrónica a primeros principios del bulto de bismuto y obtuvieron una brecha energética directa entre la banda de conducción y la de valencia en cada punto del espacio $\bk$. Debido a la presencia de esta brecha, pudieron analizar la estructura electrónica del bismuto en el esquema de la Química Cuántica Topológica \cite{Bradlyn2017} (la cual se basa 
+en el paradigma de la Representación de Bandas \cite{Cano2021}),
+y confirmaron el carácter de aislante topológico de orden superior (HOTI) de este material. Finalmente, propusieron un
+Hamiltoniano de amarre fuerte topológicamente equivalente a un modelo realista de bismuto que facilita la identificación de los estados de borde pues no contienen los estados del bulto semimetálico.
+Además, al únicamente considerar 8 orbitales por celda unitaria, las simulaciones de sistemas tridimensionales grandes son computacionalmente realizables.
+
+## Expresión analítica
+El modelo del Hamiltoniano de 8 bandas de amarre fuerte del bismuto
+propuesto por Schindler y colaboradores \cite{Schindler2018} es:
+
+$$
+\begin{align}
+    H_{\rm TB}^{Schin}(\bk) =
+    \begin{pmatrix}
+    H_{TB,I} (\bk) + \epsilon I & \delta M_{TB} (\bk)\\
+    \delta M_{TB} (\bk)^\dagger & H_{TB,II} (\bk) - \epsilon I 
+    \end{pmatrix}
+\end{align}
+$$
+
+donde los términos de $H_{TB,I} (\bk)$, $H_{TB,II} (\bk)$ y $M_{TB} (\bk)$ tienen la forma:
+
+$$
+\begin{align}
+    H_{TB,I} (\bk) &=
+    \Gamma_1 \lbrace m_I(1+ \cos{\bk \cdot \baIII^h}) - t_I[\cos{\bk \cdot \baI^h} + \cos{\bk \cdot \baII^h} + \cos{\bk \cdot (\baI^h + \baII^h)}] \rbrace \nonumber \\ 
+    & + \lambda_I [\Gamma_2 \sin{\bk \cdot \baI^h} + \Gamma_{2,1}^{I,I} \sin{\bk \cdot \baII^h} + \Gamma_{2,2}^{I,I} \sin{\bk \cdot (\baI^h+\baII^h)} + \Gamma_3 \sin \bk \cdot \baIII^h]
+\end{align}
+$$
+
+$$
+\begin{align}
+    H_{TB,II} (\bk) &=
+    \Gamma_1 \lbrace m_{II}(1+ \cos{\bk \cdot \baIII^h}) - t_{II}[\cos{\bk \cdot \baI^h} + \cos{\bk \cdot \baII^h} + \cos{\bk \cdot (\baI^h + \baII^h)}] \rbrace \nonumber \\ 
+    & + \lambda_{II} [\Gamma_2 \sin{\bk \cdot \baI^h} + \Gamma_{2,1}^{II,II} \sin{\bk \cdot \baII^h} + \Gamma_{2,2}^{II,II} \sin{\bk \cdot (\baI^h+\baII^h)} + \Gamma_3 \sin \bk \cdot \baIII^h]
+\end{align}
+$$
+
+$$
+\begin{align}
+    M_{TB} (\bk) &=
+    \Gamma_2 [\sin{\bk \cdot \baI^h} + \sin{\bk \cdot (2\baI^h+\baII^h)}] + \Gamma_{2,1}^{I,II}[\sin{\bk \cdot \baII^h} + \sin{\bk \cdot (\baII^h-\baI^h)}] \nonumber \\
+    &- \Gamma_{2,2}^{I,II}[\sin{\bk \cdot (\baI^h+\baII^h)}+\sin{\bk \cdot (\baI^h+2\baII^h)}]  - i\Gamma_5[\cos \bk \cdot \baI^h + \cos{\bk \cdot (2\baI^h+\baII^h)}] \nonumber \\
+    &-i\Gamma_{5,1}^{I,II} [\cos{\bk \cdot \baII^h}+ \cos{\bk \cdot (\baII^h-\baI^h)}] -i\Gamma_{5,2}^{I,II}[\cos {\bk \cdot (\baI^h + \baII^h)}+\cos {\bk \cdot (\baI^h + 2\baII^h)}]
+\end{align}
+$$
 
 ## Implementación en PythTB
+
+```{python}
+from pylab import *
+from pythtb import *
+
+a1 = [   1,        0,0]
+a2 = [-1/2,sqrt(3)/2,0]
+a3 = [   0,        0,1]
+
+lat = [a1,a2,a3]
+orb = [[0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2],
+       [0,0,1/2]]
+
+tI  = 1; tII = 1
+mI  = 2; mII = 2
+ϵ = 0.1
+λI = 0.3; λII = 1
+ƔII = 1
+δ = 0.3
+
+Bismuto = tb_model(3,3,lat,orb)
+```
+
+```{python}
+# [0,0]
+Bismuto.set_hop( -tI/2,0,0,[ 1,0,0] ) # cell = [ 1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -tI/2,0,0,[ 0,1,0] ) # cell = [ 0,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -tI/2,0,0,[ 1,1,0] ) # cell = [ 1,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+Bismuto.set_hop(  mI/2,0,0,[ 0,0,1] ) # cell = [ 0,0,1] -> e^{ik·[(cell)·(a1,a2,a3)]}
+```
+
+```{python}
+# [0,2]
+
+Bismuto.set_hop( -λI/2,0,2,[0,0, 1] ) # cell = [ 0,0,1] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  λI/2,0,2,[0,0,-1] ) # cell = [ 0,0,-1] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+```
+
+```{python}
+# [0,3]
+Bismuto.set_hop(  λI/(2J),0,3,[ 1,0,0] ) # cell = [ 1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -λI/(2J),0,3,[-1,0,0] ) # cell = [-1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  λI/(2J)*exp(2J*pi/3),0,3,[ 0, 1,0] ) # cell = [ 0,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -λI/(2J)*exp(2J*pi/3),0,3,[ 0,-1,0] ) # cell = [ 0,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  λI/(2J)*exp(1J*pi/3),0,3,[ 1, 1,0] ) # cell = [ 1, 1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -λI/(2J)*exp(1J*pi/3),0,3,[-1,-1,0] ) # cell = [-1,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+```
+```{python}
+# [0,5]
+Bismuto.set_hop(  1J*δ/2*exp(1J*pi/3),0,5,[ 0, 1,0] ) # cell = [ 0,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  1J*δ/2*exp(1J*pi/3),0,5,[ 0,-1,0] ) # cell = [0,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  1J*δ/2*exp(1J*pi/3),0,5,[-1, 1,0] ) # cell = [-1,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop(  1J*δ/2*exp(1J*pi/3),0,5,[ 1,-1,0] ) # cell = [1,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+Bismuto.set_hop( -1J*δ/2,0,5,[ 1, 0,0] ) # cell = [1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2,0,5,[-1, 0,0] ) # cell = [-1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2,0,5,[ 2, 1,0] ) # cell = [2,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2,0,5,[-2,-1,0]) # cell = [-2,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+Bismuto.set_hop( -1J*δ/2*exp(2J*pi/3),0,5,[ 1, 1,0] ) # cell = [1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2*exp(2J*pi/3),0,5,[-1,-1,0] ) # cell = [-1,0,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2*exp(2J*pi/3),0,5,[ 1, 2,0] ) # cell = [2,1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+Bismuto.set_hop( -1J*δ/2*exp(2J*pi/3),0,5,[-1,-2,0]) # cell = [-2,-1,0] -> e^{ik·[(cell)·(a1,a2,a3)]}
+
+```
+
+```{python}
+# [0,7]
+Bismuto.set_hop(  δ/2J,0,7,[ 1,0,0] ) 
+Bismuto.set_hop( -δ/2J,0,7,[-1,0,0] )
+
+Bismuto.set_hop( -δ/2J*exp(1J*pi/3),0,7,[ 0, 1,0] ) 
+Bismuto.set_hop(  δ/2J*exp(1J*pi/3),0,7,[ 0,-1,0] ) 
+Bismuto.set_hop( -δ/2J*exp(1J*pi/3),0,7,[-1, 1,0] ) 
+Bismuto.set_hop(  δ/2J*exp(1J*pi/3),0,7,[ 1,-1,0] ) 
+
+Bismuto.set_hop(  δ/2J,0,7,[ 2, 1,0] ) 
+Bismuto.set_hop( -δ/2J,0,7,[-2,-1,0] )
+
+Bismuto.set_hop( -δ/2J*exp(2J*pi/3),0,7,[ 1, 1,0] ) 
+Bismuto.set_hop(  δ/2J*exp(2J*pi/3),0,7,[-1,-1,0] ) 
+Bismuto.set_hop( -δ/2J*exp(2J*pi/3),0,7,[ 1, 2,0] ) 
+Bismuto.set_hop(  δ/2J*exp(2J*pi/3),0,7,[-1,-2,0] ) 
+
+```
+
+```{python}
+
+# [1,1]
+Bismuto.set_hop( -tI/2,1,1,[  1, 0,0] ) 
+#Bismuto.set_hop( -tI/2,1,1,[ -1, 0,0] ) 
+Bismuto.set_hop( -tI/2,1,1,[  0, 1,0] ) 
+#Bismuto.set_hop( -tI/2,1,1,[  0,-1,0] ) 
+Bismuto.set_hop( -tI/2,1,1,[  1, 1,0] ) 
+#Bismuto.set_hop( -tI/2,1,1,[ -1,-1,0] ) 
+
+Bismuto.set_hop( mI/2,1,1,[ 0,0, 1] ) 
+#Bismuto.set_hop( mI/2,1,1,[ 0,0,-1] ) 
+
+```
+
+```{python}
+
+# [1,2]
+Bismuto.set_hop(  λI/(2J),1,2,[ 1,0,0] ) 
+Bismuto.set_hop( -λI/(2J),1,2,[-1,0,0] ) 
+
+Bismuto.set_hop(  λI/(2J)*exp(-2J*pi/3),1,2,[0, 1,0] ) 
+Bismuto.set_hop( -λI/(2J)*exp(-2J*pi/3),1,2,[0,-1,0] ) 
+
+Bismuto.set_hop(  λI/(2J)*exp(-1J*pi/3),1,2,[ 1, 1,0] ) 
+Bismuto.set_hop( -λI/(2J)*exp(-1J*pi/3),1,2,[-1,-1,0] ) 
+
+```
+
+```{python}
+#[1,3]
+Bismuto.set_hop( -λI/2,1,3,[ 0,0, 1] ) 
+Bismuto.set_hop(  λI/2,1,3,[ 0,0,-1] ) 
+
+```
+
+```{python}
+#[1,4]
+Bismuto.set_hop(  1J*δ/2*exp(-1J*pi/3),1,4,[  0, 1,0] ) 
+Bismuto.set_hop(  1J*δ/2*exp(-1J*pi/3),1,4,[  0,-1,0] )
+Bismuto.set_hop(  1J*δ/2*exp(-1J*pi/3),1,4,[ -1, 1,0] )  
+Bismuto.set_hop(  1J*δ/2*exp(-1J*pi/3),1,4,[  1,-1,0] ) 
+
+Bismuto.set_hop( -1J*δ/2,1,4,[  1, 0,0] ) 
+Bismuto.set_hop( -1J*δ/2,1,4,[ -1, 0,0] )
+Bismuto.set_hop( -1J*δ/2,1,4,[  2, 1,0] )  
+Bismuto.set_hop( -1J*δ/2,1,4,[ -2,-1,0] ) 
+
+Bismuto.set_hop( -1J*δ/2*exp(-2J*pi/3),1,4,[  1, 1,0] ) 
+Bismuto.set_hop( -1J*δ/2*exp(-2J*pi/3),1,4,[ -1,-1,0] )
+Bismuto.set_hop( -1J*δ/2*exp(-2J*pi/3),1,4,[  1, 2,0] )  
+Bismuto.set_hop( -1J*δ/2*exp(-2J*pi/3),1,4,[ -1,-2,0] ) 
+```
+
+```{python}
+#[1,6]
+Bismuto.set_hop(   δ/2J,1,6,[  1,0,0] ) 
+Bismuto.set_hop(  -δ/2J,1,6,[ -1,0,0] )
+
+Bismuto.set_hop(  -δ/2J*exp(-1J*pi/3),1,6,[  0, 1,0] )  
+Bismuto.set_hop(   δ/2J*exp(-1J*pi/3),1,6,[  0,-1,0] ) 
+Bismuto.set_hop(  -δ/2J*exp(-1J*pi/3),1,6,[ -1, 1,0] )  
+Bismuto.set_hop(   δ/2J*exp(-1J*pi/3),1,6,[  1,-1,0] )
+
+Bismuto.set_hop(   δ/2J,1,6,[  2, 1,0] ) 
+Bismuto.set_hop(  -δ/2J,1,6,[ -2,-1,0] )
+
+Bismuto.set_hop(  -δ/2J*exp(-2J*pi/3),1,6,[  1, 1,0] )  
+Bismuto.set_hop(   δ/2J*exp(-2J*pi/3),1,6,[ -1,-1,0] ) 
+Bismuto.set_hop(  -δ/2J*exp(-2J*pi/3),1,6,[  1, 2,0] )  
+Bismuto.set_hop(   δ/2J*exp(-2J*pi/3),1,6,[ -1,-2,0] )
+```
+
+```{python}
+
+#[2,2]
+Bismuto.set_hop( tI/2,2,2,[  1,0,0] ) 
+#Bismuto.set_hop( -tI/2,2,2,[ -1,0,0] ) 
+Bismuto.set_hop( tI/2,2,2,[ 0, 1,0] ) 
+#Bismuto.set_hop( -tI/2,2,2,[ 0,-1,0] ) 
+Bismuto.set_hop( tI/2,2,2,[  1, 1,0] )
+#Bismuto.set_hop( -tI/2,2,2,[ -1,-1,0] ) 
+
+Bismuto.set_hop( -mI/2,2,2,[ 0,0, 1] ) 
+#Bismuto.set_hop( -mI/2,2,2,[ 0,0,-1] ) 
+```
+
+```{python}
+
+#[2,5]
+Bismuto.set_hop(   δ/2J,2,5,[  1,0,0] ) 
+Bismuto.set_hop(  -δ/2J,2,5,[ -1,0,0] ) 
+
+Bismuto.set_hop(  -δ/2J*exp(1J*pi/3),2,5,[  0, 1,0] ) 
+Bismuto.set_hop(   δ/2J*exp(1J*pi/3),2,5,[  0,-1,0] )
+Bismuto.set_hop(  -δ/2J*exp(1J*pi/3),2,5,[ -1, 1,0] )
+Bismuto.set_hop(   δ/2J*exp(1J*pi/3),2,5,[  1,-1,0] )
+
+Bismuto.set_hop(   δ/2J,2,5,[  2, 1,0] ) 
+Bismuto.set_hop(  -δ/2J,2,5,[ -2,-1,0] ) 
+
+Bismuto.set_hop(  -δ/2J*exp(2J*pi/3),2,5,[  1, 1,0] ) 
+Bismuto.set_hop(   δ/2J*exp(2J*pi/3),2,5,[ -1,-1,0] )
+Bismuto.set_hop(  -δ/2J*exp(2J*pi/3),2,5,[  1, 2,0] )
+Bismuto.set_hop(   δ/2J*exp(2J*pi/3),2,5,[ -1,-2,0] )
+```
+
+
+
+```{python}
+
+#[2,7]
+
+Bismuto.set_hop(  -δ*1J/2*exp(1J*pi/3) ,2,7,[  0, 1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(1J*pi/3) ,2,7,[  0,-1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(1J*pi/3) ,2,7,[ -1, 1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(1J*pi/3) ,2,7,[  1,-1,0] )
+
+Bismuto.set_hop(   δ*1J/2, 2,7,[  1, 0,0] )
+Bismuto.set_hop(   δ*1J/2, 2,7,[ -1, 0,0] )
+Bismuto.set_hop(   δ*1J/2, 2,7,[  2, 1,0] )
+Bismuto.set_hop(   δ*1J/2, 2,7,[ -2,-1,0] ) 
+
+Bismuto.set_hop(   δ*1J/2*exp(2J*pi/3) ,2,7,[  1, 1,0] )
+Bismuto.set_hop(   δ*1J/2*exp(2J*pi/3) ,2,7,[ -1,-1,0] )
+Bismuto.set_hop(   δ*1J/2*exp(2J*pi/3) ,2,7,[  1, 2,0] )
+Bismuto.set_hop(   δ*1J/2*exp(2J*pi/3) ,2,7,[ -1,-2,0] )
+
+```
+
+
+```{python}
+
+
+
+#[3,4]
+Bismuto.set_hop(   δ/2J,3,4,[  1,0,0] ) 
+Bismuto.set_hop(  -δ/2J,3,4,[ -1,0,0] ) 
+
+Bismuto.set_hop(  -δ/2J*exp(-1J*pi/3),3,4,[  0, 1,0] ) 
+Bismuto.set_hop(   δ/2J*exp(-1J*pi/3),3,4,[  0,-1,0] )
+Bismuto.set_hop(  -δ/2J*exp(-1J*pi/3),3,4,[ -1, 1,0] )
+Bismuto.set_hop(   δ/2J*exp(-1J*pi/3),3,4,[  1,-1,0] )
+
+Bismuto.set_hop(   δ/2J,3,4,[  2, 1,0] ) 
+Bismuto.set_hop(  -δ/2J,3,4,[ -2,-1,0] ) 
+
+Bismuto.set_hop(  -δ/2J*exp(-2J*pi/3),3,4,[  1, 1,0] ) 
+Bismuto.set_hop(   δ/2J*exp(-2J*pi/3),3,4,[ -1,-1,0] )
+Bismuto.set_hop(  -δ/2J*exp(-2J*pi/3),3,4,[  1, 2,0] )
+Bismuto.set_hop(   δ/2J*exp(-2J*pi/3),3,4,[ -1,-2,0] )
+
+
+```
+
+```{python}
+
+#[3,6]
+
+Bismuto.set_hop(  -δ*1J/2*exp(-1J*pi/3) ,3,6,[  0, 1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(-1J*pi/3) ,3,6,[  0,-1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(-1J*pi/3) ,3,6,[ -1, 1,0] )
+Bismuto.set_hop(  -δ*1J/2*exp(-1J*pi/3) ,3,6,[  1,-1,0] )
+
+Bismuto.set_hop(   δ*1J/2, 3,6,[  1, 0,0] )
+Bismuto.set_hop(   δ*1J/2, 3,6,[ -1, 0,0] )
+Bismuto.set_hop(   δ*1J/2, 3,6,[  2, 1,0] )
+Bismuto.set_hop(   δ*1J/2, 3,6,[ -2,-1,0] ) 
+
+Bismuto.set_hop(   δ*1J/2*exp(-2J*pi/3) ,3,6,[  1, 1,0] )
+Bismuto.set_hop(   δ*1J/2*exp(-2J*pi/3) ,3,6,[ -1,-1,0] )
+Bismuto.set_hop(   δ*1J/2*exp(-2J*pi/3) ,3,6,[  1, 2,0] )
+Bismuto.set_hop(   δ*1J/2*exp(-2J*pi/3) ,3,6,[ -1,-2,0] )
+
+```
+
+```{python}
+#[4,4]
+Bismuto.set_hop( -tII/2,4,4,[ 1,0,0] ) 
+Bismuto.set_hop( -tII/2,4,4,[ 0,1,0] ) 
+Bismuto.set_hop( -tII/2,4,4,[ 1,1,0] ) 
+ 
+Bismuto.set_hop(  mII/2,4,4,[ 0,0,1] ) 
+
+```
+
+```{python}
+
+#[4,6]
+Bismuto.set_hop( -λII/2,4,6,[ 0,0, 1] ) 
+Bismuto.set_hop(  λII/2,4,6,[ 0,0,-1] ) 
+
+```
+
+```{python}
+
+
+#[4,7]
+Bismuto.set_hop(  λII/2J,4,7,[  1, 0,0] ) 
+Bismuto.set_hop( -λII/2J,4,7,[ -1, 0,0] )
+Bismuto.set_hop(  λII/2J,4,7,[  0, 1,0] ) 
+Bismuto.set_hop( -λII/2J,4,7,[  0,-1,0] )
+Bismuto.set_hop( -λII/2J,4,7,[  1, 1,0] ) 
+Bismuto.set_hop(  λII/2J,4,7,[ -1,-1,0] )
+
+Bismuto.set_hop( -ƔII/2,4,7,[  1,-1,0] ) 
+Bismuto.set_hop(  ƔII/2,4,7,[ -1, 1,0] )
+Bismuto.set_hop(  ƔII/2,4,7,[  2, 1,0] ) 
+Bismuto.set_hop( -ƔII/2,4,7,[ -2,-1,0] )
+Bismuto.set_hop( -ƔII/2,4,7,[  1, 2,0] ) 
+Bismuto.set_hop(  ƔII/2,4,7,[ -1,-2,0] )
+
+```
+
+```{python}
+
+
+#[5,5]
+Bismuto.set_hop( -tII/2,5,5,[ 1,0,0] ) 
+Bismuto.set_hop( -tII/2,5,5,[ 0,1,0] ) 
+Bismuto.set_hop( -tII/2,5,5,[ 1,1,0] ) 
+ 
+Bismuto.set_hop(  mII/2,5,5,[ 0,0,1] ) 
+```
+
+```{python}
+
+#[5,6]
+Bismuto.set_hop(  λII/2J,5,6,[  1, 0,0] ) 
+Bismuto.set_hop( -λII/2J,5,6,[ -1, 0,0] )
+Bismuto.set_hop(  λII/2J,5,6,[  0, 1,0] ) 
+Bismuto.set_hop( -λII/2J,5,6,[  0,-1,0] )
+Bismuto.set_hop( -λII/2J,5,6,[  1, 1,0] ) 
+Bismuto.set_hop(  λII/2J,5,6,[ -1,-1,0] )
+
+Bismuto.set_hop(  ƔII/2,5,6,[  1,-1,0] ) 
+Bismuto.set_hop( -ƔII/2,5,6,[ -1, 1,0] )
+Bismuto.set_hop( -ƔII/2,5,6,[  2, 1,0] ) 
+Bismuto.set_hop(  ƔII/2,5,6,[ -2,-1,0] )
+Bismuto.set_hop(  ƔII/2,5,6,[  1, 2,0] ) 
+Bismuto.set_hop( -ƔII/2,5,6,[ -1,-2,0] )
+```
+
+```{python}
+
+#[5,7]
+Bismuto.set_hop( -λII/2,5,7,[ 0,0, 1] ) 
+Bismuto.set_hop(  λII/2,5,7,[ 0,0,-1] ) 
+```
+
+```{python}
+
+
+#[6,6]
+Bismuto.set_hop(  tII/2,6,6,[ 1,0,0] ) 
+Bismuto.set_hop(  tII/2,6,6,[ 0,1,0] ) 
+Bismuto.set_hop(  tII/2,6,6,[ 1,1,0] ) 
+ 
+Bismuto.set_hop( -mII/2,6,6,[ 0,0,1] ) 
+
+```
+
+```{python}
+
+#[7,7]
+Bismuto.set_hop(  tII/2,7,7,[ 1,0,0] ) 
+Bismuto.set_hop(  tII/2,7,7,[ 0,1,0] ) 
+Bismuto.set_hop(  tII/2,7,7,[ 1,1,0] ) 
+ 
+Bismuto.set_hop( -mII/2,7,7,[ 0,0,1] )
+
+
+Bismuto.set_onsite( [ϵ+mI,ϵ+mI,ϵ-mI,ϵ-mI,-ϵ+mII,-ϵ+mII,-ϵ-mII,-ϵ-mII] )
+
+```
