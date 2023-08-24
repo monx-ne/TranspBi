@@ -1,4 +1,4 @@
-# Preface {.unnumbered}
+# Prefacio {.unnumbered}
 
 Este es un sitio creado con Quarto y y publicado a través de GitHub Pages. En él se encuentran conceptos clave para el estudio del transporte electrónico en nanoestructuras de bismuto.
 

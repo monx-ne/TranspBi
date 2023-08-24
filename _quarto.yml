@@ -14,7 +14,12 @@ book:
     - hamiltonian.qmd
     - transp.qmd
     - references.qmd
-  favicon: logo.png
+  sidebar:
+    logo: logo.png
+  downloads: [pdf, epub]
+  sharing: [twitter, facebook]
+  search: true
+  repo-url: https://github.com/monx-ne/TranspBi
 
 
 bibliography: references.bib
