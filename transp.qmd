@@ -1,3 +1,128 @@
 # Transporte electrónico de bismuto
 
+Los cálculos de transporte electrónico en bismuto a bajas energías se realizaron utilizando el $H_{\rm TB}^{Schin} (\bk)$. 
+Con los parámetros de salto de este Hamiltoniano se construyó la geometría mostrada en la Figura~\ref{fig:bi-contacts} en la paquetería KWANT \cite{Groth_2014-KWANT}, la cual consiste de una 
+base hexagonal con 18 sitios a lo largo de un lado. Se evaluó el 
+transporte electrónico con los 2 contactos conectados a la nanoestructura de bismuto, utilizando el formalismo de Landauer-B\"uttiker revisado en el capítulo \ref{chapter:transport}. 
+En dicho formalismo, la cantidad clave a calcular es la probabilidad 
+de transmisión, la cual se evaluó utilizando el método de la matriz de dispersión implementado en esta librería.
+
+
 ## Implementación en KWANT
+
+```{python}
+from pylab import *
+from pythtb import *
+import kwant
+
+
+def make_syst_Schindler(s,height):
+    alat  = 1
+
+    a1 = alat*[   1,        0,0]
+    a2 = alat*[-1/2,sqrt(3)/2,0]
+    a3 = alat*[   0,        0,1]
+
+    bismuth = kwant.lattice.general( [(a1),(a2),(a3)], 
+                                 [(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0),(0,0,0)],
+                                  norbs=1 )
+                
+    a,b,c,d,e,f,g,h = bismuth.sublattices
+
+    def hexagon_1(pos):
+        x, y, z = pos 
+        return (-s<x<=-(s/2) and -np.sqrt(3)*(s+x-0.6)<y<np.sqrt(3)*(s+x-0.6) and 0 <= z <= height)
+    #cuadrado en el centro
+    def hexagon_2(pos):
+        x, y, z = pos 
+        return (-s/2<x<=s/2 and -np.sqrt(3)*(s/2)+0.5<y<np.sqrt(3)*(s/2) and 0 <= z <= height)
+    #triangulo derecho 
+    def hexagon_3(pos):
+        x, y, z = pos 
+        return (s/2<x<=s and np.sqrt(3)*(x-s+0.1)<y<np.sqrt(3)*(s-x) and 0 <= z <= height)
+    #hexagono completo 
+    def hexagon(pos):
+        x,y,z = pos 
+        return (hexagon_1(pos)+hexagon_2(pos)+hexagon_3(pos))
+
+    #triangulo izquierdo
+    def hexagonL_1(pos):
+        x, y, z = pos 
+        return (-s<x<=-(s/2) and -np.sqrt(3)*(s+x-0.6)<y<np.sqrt(3)*(s+x-0.6))
+    #cuadrado en el centro
+    def hexagonL_2(pos):
+        x, y, z = pos 
+        return (-s/2<x<=s/2 and -np.sqrt(3)*(s/2)+0.5<y<np.sqrt(3)*(s/2))
+    #triangulo derecho 
+    def hexagonL_3(pos):
+        x, y, z = pos 
+        return (s/2<x<=s and np.sqrt(3)*(x-s+0.1)<y<np.sqrt(3)*(s-x))
+    #hexagono del lead completo
+    def hexagon_lead(pos):
+        x,y,z = pos 
+        return (hexagonL_1(pos)+hexagonL_2(pos)+hexagonL_3(pos))
+
+    def onsite(site):
+        ϵ = 0.1; mI  = 2; mII = 2
+        if site.family   == a:
+            return ϵ+mI
+        elif site.family == b:
+            return ϵ+mI
+        elif site.family == c:
+            return ϵ-mI
+        elif site.family == d:
+            return ϵ-mI
+        elif site.family == e:
+            return -ϵ+mII  
+        elif site.family == f:
+            return -ϵ+mII  
+        elif site.family == g:
+            return -ϵ-mII  
+        elif site.family == h:
+            return -ϵ-mII  
+
+    syst = kwant.Builder()
+    syst[bismuth.shape(hexagon,(0,0,0))] = onsite  
+
+
+    sym0 = kwant.TranslationalSymmetry(bismuth.vec((0, 0, -1)))
+    lead0 = kwant.Builder(sym0)
+    lead0[bismuth.shape(hexagon_lead, (0, 0, 0))] = onsite
+
+    sym1 = kwant.TranslationalSymmetry(bismuth.vec((0, 0, 1)))
+    lead1 = kwant.Builder(sym1)
+    lead1[bismuth.shape(hexagon_lead, (0, 0, 0))] = onsite
+    
+    with open('hopps_kwant_Schindler.txt', "rb") as source_file:
+        code = compile(source_file.read(), 'hopps_kwant_Schindler.txt', "exec")
+        exec(code)
+    
+    leads = [lead0, lead1]   
+    syst.attach_lead(lead0)   
+    syst.attach_lead(lead1)   
+    syst = syst.finalized() 
+    
+    return syst, leads    
+
+```
+
+```{python}
+def Conductancia(syst,energias,s,height):
+  datos = []
+  for energia in energias:
+    matrizS = kwant.smatrix(syst,energia)
+    datos.append(matrizS.transmission(0,1))
+  
+  return energias,datos
+```
+
+```{python}
+s = 3
+height = 5
+
+syst, leads = make_syst_Schindler(s,height)
+
+energias = linspace(-0.5,0.5)
+
+energias,datos = Conductancia(syst,energias,s,height)
+```
