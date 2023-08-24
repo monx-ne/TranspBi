@@ -4,13 +4,6 @@
     "href": "index.html",
     "title": "Transporte en nanoestructuras de Bi",
     "section": "",
-    "text": "This is a Quarto book.\nTo learn more about Quarto books visit https://quarto.org/docs/books."
-  },
-  {
-    "objectID": "intro.html",
-    "href": "intro.html",
-    "title": "1  Introducción",
-    "section": "",
-    "text": "La elaboración de estas notas tiene como propósito brindar acceso a los resultados del trabajo de investigación desempeñado por la autora en el Programa de Maestría en Ciencias Químicas."
+    "text": "Este es un sitio creado con Quarto y GitHub Pages. En el se pueden encontrar conceptos clave para el estudio del transporte electrónico en nanoestructuras de bismuto.\nLa elaboración de estas notas tiene como propósito brindar acceso a los resultados del trabajo de investigación desempeñado por la autora en el Programa de Maestría en Ciencias Químicas."
   }
 ]
