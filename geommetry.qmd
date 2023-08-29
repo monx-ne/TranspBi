@@ -8,9 +8,9 @@ El bismuto (Bi) es un elemento químico cuyo arreglo cristalino consiste de una 
 cada uno de ellos con tres primeros vecinos y tres segundos vecinos \cite{HOFMANN2006}, como se señala en la Fig. @RomboRealRec a). 
 
 
-![a) Celda romboédrica de bismuto en el espacio real, con los vectores de red $\mathbf{a}^r_n$ ($n=1,2,3$). b) Primera zona de Brillouin de la estructura romboédrica del Bi, con los vectores $\mathbf{b}^r_n$ y los puntos de alta simetría (naranja).](images/RombRealRec.png){#RomboRealRec}
+![a) Celda romboédrica de bismuto en el espacio real, con los vectores de red $\mathbf{a}^r_n$ ($n=1,2,3$). b) Primera zona de Brillouin de la estructura romboédrica del Bi, con los vectores $\mathbf{b}^r_n$ y los puntos de alta simetría (naranja).](images/RombRealRec.png){#fig-RomboRealRecBi}
 
-La estructura romboédrica de bismuto se esquematiza en la Fig. @RomboRealRec-Bi (a), 
+La estructura romboédrica de bismuto se esquematiza en la Fig. @fig-RomboRealRecBi (a), 
 donde los vectores de la red en el espacio real son:
 
 $$
@@ -19,7 +19,7 @@ $$
     \mathbf{a}_3^r = \left (             0 , -\frac{\sqrt{3}}{3}a , \frac{1}{3}c \right ) 
 $$
 
-\noindent siendo $a=4.5332$ &#8491; , $c= 11.7967$ &#8491; y $\alpha = 57^{\circ}19'$ \cite{LiuandAllen1995}. 
+siendo $a=4.5332$ &#8491; , $c= 11.7967$ &#8491; y $\alpha = 57^{\circ}19'$ \cite{LiuandAllen1995}. 
 
 
 El grupo espacial de la estructura cristalina es $R\bar{3}m$ y su grupo puntual es el $D_{3d}$.
@@ -34,7 +34,7 @@ Por lo tanto, las operaciones de simetría espacial que caracterizan este arregl
 ### Espacio recíproco
 
 La primera zona de Brillouin (1ZB) para la celda romboédrica tiene la forma de una octaedro truncado, el cual se esquematiza en
-la Fig. @:RomboRealRec b). Los vectores de la red recíproca son:
+la Fig. @fig-RomboRealRecBi b). Los vectores de la red recíproca son:
 
 $$
     \mathbf{b}_1^r = \left ( -1 , - \frac{\sqrt{3}}{3} , b \right )g  \hspace{15mm}
@@ -75,9 +75,9 @@ donde $h=0.2303$ en el caso de bismuto \cite{Falicov1965}.
 Al proyectar en el plano (111), el bulto del cristal forma una red hexagonal con dos átomos por celda unitaria.
 
 En el modelo topológico de bismuto \cite{Schindler2018} que reproduce los estados conductores de borde en una nanoestructura (ver [Sección -@sec-hamiltonian]), 
-se considera una estructura como la que se esquematiza en la Fig. @HexRealRec. 
+se considera una estructura como la que se esquematiza en la Fig. @fig-HexRealRec. 
 
-![a) Estructura de la celda unitaria para el Hamiltoniano topológico de bismuto en el espacio real y b) recíproco. Los vectores de la red real están etiquetados por $\mathbf{a}^h_n$ y los de la red recíproca por $\mathbf{b}^h_n$ ($n=1,2,3$).](images/HexRealRec.png){#HexRealRec}
+![a) Estructura de la celda unitaria para el Hamiltoniano topológico de bismuto en el espacio real y b) recíproco. Los vectores de la red real están etiquetados por $\mathbf{a}^h_n$ y los de la red recíproca por $\mathbf{b}^h_n$ ($n=1,2,3$).](images/HexRealRec.png){#fig-HexRealRec}
 
 
 Este sistema consiste de una red hexagonal simple que preserva las simetrías espaciales de la red de bismuto.

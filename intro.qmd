@@ -1,2 +1,18 @@
 # Introducción
 
+El bismuto es uno de los elementos químicos más pesados y con un mayor tiempo de vida media ($2 \times 10 ^{19}$ años aproximadamente) \cite{Kanatzidis2020,Marcillac2003}. 
+Por ende, posee un enorme acoplamiento espín-orbita (SOC, por sus siglas en inglés) y sus electrones presentan efectos relativistas \cite{Tatewaki2017, Bucinsky2016}. 
+El cristal de bismuto es un semimetal en el que se han observado diversas propiedades y fenómenos cuánticos de interés, 
+siendo uno de ellos la topología de su estructura electrónica \cite{Ito2016}.
+
+La estructura electrónica de Bi prístino ha sido considerada por un largo tiempo como topológicamente trivial, lo cual implica que
+Sin embargo, a través de varios experimentos empleando la espectroscopía de fotoemisión con resolución angular 
+(ARPES, por sus siglas en inglés), se encontró que las bandas de la superficie poseen una topología no trivial \cite{Ohtsubo2013,Perfetti2015,}, como se observa en
+la Fig. \ref{fig:ArpesBi3d}.
+
+En el año 2018, se realizó un esfuerzo excepcional en este ámbito, donde fue identificada la naturaleza topológica de orden superior 
+de la estructura electrónica de bismuto \cite{Schindler2018}.
+En dicho trabajo se identificaron estados de arista @fig-expBihs, o \textit{hinge states}, los cuales están protegidos globalmente por la simetría de reversión temporal ($TRS$), 
+y discretamente por la simetría rotacional de tercer orden ($\hat{\mathcal{C}_3}$) y la simetría de inversión del cristal de bismuto ($\hat{\mathcal{I}}$).
+
+![Detección experimental de los estados de arista. a) Experimento STM donde se observan estados alternados y fuertemente localizados en el borde de Bi (111). b) Junta de Josephson S/Bi/S donde se detecta corriente fluye a través de canales extremadamente estrechos (unidimensionales) \cite{Schindler2018}.](images/Exp-bitop.png){#fig-expBihs}
